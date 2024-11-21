@@ -13,6 +13,8 @@
 #define QR_CODE_READER_TASK_PRIORITY 5
 #endif
 
+extern SemaphoreHandle_t camera_mutex;
+
 enum QRCodeReaderSetupErr
 {
   SETUP_OK,
@@ -40,7 +42,7 @@ public:
   camera_config_t cameraConfig;
   QueueHandle_t qrCodeQueue;
   bool begun = false;
-  bool debug = true;
+  bool debug = false;
 
   // Constructor
   ESP32QRCodeReader();

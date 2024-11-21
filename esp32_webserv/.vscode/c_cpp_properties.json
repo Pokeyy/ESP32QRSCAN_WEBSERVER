@@ -8,11 +8,11 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/include",
-                "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/src",
+                "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
+                "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/include",
-                "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/src",
+                "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/include",
+                "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/src",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",
@@ -246,11 +246,11 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/include",
-                    "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/src",
+                    "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
+                    "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                    "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/include",
-                    "c:/sdp_drone_project_repo/Senior-Design-Project-2024/test2/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/src",
+                    "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/include",
+                    "c:/sdp_drone_project_repo/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/esp32cam/ESP32QRCodeReader/src",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",

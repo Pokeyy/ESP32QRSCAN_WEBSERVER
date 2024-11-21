@@ -61,7 +61,7 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
 
   cameraConfig.frame_size = FRAMESIZE_QVGA;
   //cameraConfig.frame_size = frameSize;
-  cameraConfig.jpeg_quality = 15;
+  cameraConfig.jpeg_quality = 10;
   cameraConfig.fb_count = 1;
 
 #if defined(CAMERA_MODEL_ESP_EYE)
@@ -190,7 +190,9 @@ void qrCodeDetectTask(void *taskData)
     }
     //vTaskDelay(100 / portTICK_PERIOD_MS);
     delay(500);
+    xSemaphoreTake(camera_mutex, portMAX_DELAY);
     fb = esp_camera_fb_get();
+    xSemaphoreGive(camera_mutex);
     if (!fb)
     {
       if (self->debug)

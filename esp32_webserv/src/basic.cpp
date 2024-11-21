@@ -6,9 +6,10 @@
 #include "camera_pins.h"
 
 //#define CAMERA_MODEL_AI_THINKER
-
+SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();  // Define the mutex here
 const char *ssid = "ASUS_2.4G";
 const char *password = "111627284450";
+static int frame_counter = 0; 
 
 ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
 
@@ -19,7 +20,15 @@ void onQrCodeTask(void *pvParameters)
 
   while (true)
   {
-    if (reader.receiveQrCode(&qrCodeData, 100))
+    
+    if (frame_counter % 10 == 0 && reader.receiveQrCode(&qrCodeData, 100)) {
+        frame_counter++;
+    } else {
+        frame_counter++;
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        continue;
+    }
+    
     {
       Serial.println("Found QRCode");
       if (qrCodeData.valid)
@@ -47,11 +56,17 @@ void readMacAddress(){
     Serial.printf("%02x:%02x:%02x:%02x:%02x:%02x\n",
                   baseMac[0], baseMac[1], baseMac[2],
                   baseMac[3], baseMac[4], baseMac[5]);
-  } else {
+  } 
+  else {
     Serial.println("Failed to read MAC address");
   }
 }
 
+
+  //
+  //SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();
+    
+    //static int frame_counter = 0;
 void setup()
 {
   Serial.begin(115200);
@@ -82,7 +97,7 @@ void setup()
 
   Serial.println("Begin on Core 1");
 
-  xTaskCreate(onQrCodeTask, "onQrCode", 4 * 1024, NULL, 6, NULL);
+  xTaskCreate(onQrCodeTask, "onQrCode", 4 * 1024, NULL, 3, NULL);
   delay(200);
 }
 

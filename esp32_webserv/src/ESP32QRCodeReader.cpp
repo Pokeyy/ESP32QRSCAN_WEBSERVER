@@ -104,9 +104,15 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
     return SETUP_CAMERA_INIT_ERROR;
   }
   return SETUP_OK;
-
+  httpd_req_t *req;
   sensor_t *s = esp_camera_sensor_get();
   // initial sensors are flipped vertically and colors are a bit saturated
+  if(s->id.PID == OV2640_PID) {
+    //  cmd_handler(req);
+      s->set_hmirror(s, 0);
+      s->set_vflip(s, 1);
+  }
+
   if (s->id.PID == OV3660_PID) {
     s->set_vflip(s, 1);        // flip it back
     s->set_brightness(s, 1);   // up the brightness just a bit

@@ -56,7 +56,7 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
   cameraConfig.pin_sscb_scl = pins.SIOC_GPIO_NUM;
   cameraConfig.pin_pwdn = pins.PWDN_GPIO_NUM;
   cameraConfig.pin_reset = pins.RESET_GPIO_NUM;
-  cameraConfig.xclk_freq_hz = 10000000;
+  cameraConfig.xclk_freq_hz = 20000000;
   cameraConfig.pixel_format = PIXFORMAT_GRAYSCALE;
 
   cameraConfig.frame_size = FRAMESIZE_QVGA;
@@ -84,6 +84,9 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
   } else {
     // Best option for face detection/recognition
     cameraConfig.frame_size = FRAMESIZE_240X240;
+    cameraConfig.jpeg_quality = 10;
+    cameraConfig.fb_count = 2;
+    cameraConfig.grab_mode = CAMERA_GRAB_LATEST;
 #if CONFIG_IDF_TARGET_ESP32S3
     config.fb_count = 2;
 #endif

@@ -4,6 +4,15 @@
 #include "Arduino.h"
 #include "ESP32CameraPins.h"
 #include "esp_camera.h"
+//#include <Arduino.h>
+#include "esp_http_server.h"
+#include "esp_timer.h"
+//#include "esp_camera.h"
+#include "img_converters.h"
+#include "fb_gfx.h"
+#include "esp32-hal-ledc.h"
+#include "sdkconfig.h"
+#include "camera_index.h"
 
 #ifndef QR_CODE_READER_STACK_SIZE
 #define QR_CODE_READER_STACK_SIZE 40 * 1024
@@ -62,4 +71,4 @@ public:
   void setDebug(bool);
 };
 
-#endif // ESP32_QR_CODE_ARDUINO_H_
+#endif

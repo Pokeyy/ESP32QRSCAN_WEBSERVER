@@ -9,11 +9,19 @@
 void startCameraServer();
 void setupLedFlash(int pin);
 
-ESP32QRCodeReader::ESP32QRCodeReader() : ESP32QRCodeReader(CAMERA_MODEL_AI_THINKER, FRAMESIZE_QVGA)
+// ESP32QRCodeReader::ESP32QRCodeReader() : ESP32QRCodeReader(CAMERA_MODEL_AI_THINKER, FRAMESIZE_QVGA)
+// {
+// }
+
+ESP32QRCodeReader::ESP32QRCodeReader() : ESP32QRCodeReader(CAMERA_MODEL_XIAO_ESP32S3, FRAMESIZE_QVGA)
 {
 }
 
-ESP32QRCodeReader::ESP32QRCodeReader(framesize_t frameSize) : ESP32QRCodeReader(CAMERA_MODEL_AI_THINKER, FRAMESIZE_QVGA)
+// ESP32QRCodeReader::ESP32QRCodeReader(framesize_t frameSize) : ESP32QRCodeReader(CAMERA_MODEL_AI_THINKER, FRAMESIZE_QVGA)
+// {
+// }
+
+ESP32QRCodeReader::ESP32QRCodeReader(framesize_t frameSize) : ESP32QRCodeReader(CAMERA_MODEL_XIAO_ESP32S3, FRAMESIZE_QVGA)
 {
 }
 
@@ -74,7 +82,7 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
   if (cameraConfig.pixel_format == PIXFORMAT_JPEG) {
     if (psramFound()) {
       cameraConfig.jpeg_quality = 10;
-      cameraConfig.fb_count = 2;
+      cameraConfig.fb_count = 1;
       cameraConfig.grab_mode = CAMERA_GRAB_LATEST;
     } else {
       // Limit the frame size when PSRAM is not available
@@ -85,10 +93,10 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
     // Best option for face detection/recognition
     cameraConfig.frame_size = FRAMESIZE_240X240;
     cameraConfig.jpeg_quality = 10;
-    cameraConfig.fb_count = 2;
+    cameraConfig.fb_count = 1;
     cameraConfig.grab_mode = CAMERA_GRAB_LATEST;
 #if CONFIG_IDF_TARGET_ESP32S3
-    config.fb_count = 2;
+    cameraConfig.fb_count = 1;
 #endif
   }
 
@@ -151,6 +159,7 @@ void dumpData(const struct quirc_data *data)
 
 void qrCodeDetectTask(void *taskData)
 {
+  Serial.println("qrCodeDetectTask is running...");
   ESP32QRCodeReader *self = (ESP32QRCodeReader *)taskData;
   camera_config_t camera_config = self->cameraConfig;
   if (camera_config.frame_size > FRAMESIZE_SVGA)

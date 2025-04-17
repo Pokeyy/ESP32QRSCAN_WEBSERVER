@@ -7,7 +7,7 @@
 #include "esp_http_server.h"
 
 #ifndef QR_CODE_READER_STACK_SIZE
-#define QR_CODE_READER_STACK_SIZE 40 * 1024
+#define QR_CODE_READER_STACK_SIZE 64 * 1024 // was 40
 #endif
 
 #ifndef QR_CODE_READER_TASK_PRIORITY

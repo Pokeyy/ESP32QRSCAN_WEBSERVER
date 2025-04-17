@@ -7,11 +7,12 @@
 
 //#define CAMERA_MODEL_AI_THINKER
 SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();  // Define the mutex here
-const char *ssid = "ASUS_2.4G";
-const char *password = "111627284450";
+const char *ssid = "Frontier2672";
+const char *password = "2608177775";
 static int frame_counter = 0; 
 
-ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
+//ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
+ESP32QRCodeReader reader(CAMERA_MODEL_XIAO_ESP32S3);
 
 
 void onQrCodeTask(void *pvParameters)
@@ -20,7 +21,7 @@ void onQrCodeTask(void *pvParameters)
 
   while (true)
   {
-    
+    //Serial.printf("Stack high water mark before: %d\n", uxTaskGetStackHighWaterMark(NULL));
     if (frame_counter % 10 == 0 && reader.receiveQrCode(&qrCodeData, 100)) {
         frame_counter++;
     } else {
@@ -30,6 +31,7 @@ void onQrCodeTask(void *pvParameters)
     }
     
     {
+      //Serial.printf("Stack high water mark after: %d\n", uxTaskGetStackHighWaterMark(NULL));
       Serial.println("Found QRCode");
       if (qrCodeData.valid)
       {
@@ -69,10 +71,16 @@ void readMacAddress(){
     //static int frame_counter = 0;
 void setup()
 {
+  if (!psramFound()) {
+    Serial.println("PSRAM not found! Reduce memory usage.");
+  }
   Serial.begin(115200);
   Serial.println();
 
-
+  if (!psramFound()) {
+    Serial.println("PSRAM not found! Reduce memory usage.");
+  }
+  //Serial.printf("Free heap size: %u\n", esp_get_free_heap_size());
   WiFi.begin(ssid, password);
   WiFi.setSleep(false);
 
@@ -83,7 +91,11 @@ void setup()
   Serial.println("");
   Serial.println("WiFi connected");
 
+  //Serial.printf("Free heap size before camera setup: %u\n", esp_get_free_heap_size());
+
   startCameraServer();
+
+  //Serial.printf("Free heap size after camera setup: %u\n", esp_get_free_heap_size());
 
   Serial.print("Camera Ready! Use 'http://");
   Serial.print(WiFi.localIP());
@@ -97,7 +109,7 @@ void setup()
 
   Serial.println("Begin on Core 1");
 
-  xTaskCreate(onQrCodeTask, "onQrCode", 4 * 1024, NULL, 3, NULL);
+  xTaskCreate(onQrCodeTask, "onQrCode", 8 * 1024, NULL, 3, NULL);
   delay(200);
 }
 

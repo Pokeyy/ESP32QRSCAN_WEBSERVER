@@ -204,10 +204,9 @@ void qrCodeDetectTask(void *taskData)
       Serial.printf("alloc qr heap: %u\r\n", xPortGetFreeHeapSize());
       Serial.printf("uxHighWaterMark = %d\r\n", uxTaskGetStackHighWaterMark(NULL));
       Serial.print("begin camera get fb\r\n\n");
-      //delay(500);
     }
-    //vTaskDelay(100 / portTICK_PERIOD_MS);
-    delay(500);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+  
     xSemaphoreTake(camera_mutex, portMAX_DELAY);
     fb = esp_camera_fb_get();
     xSemaphoreGive(camera_mutex);
@@ -321,6 +320,14 @@ void qrCodeDetectTask(void *taskData)
       }
       xQueueSend(self->qrCodeQueue, &qrCodeData, (TickType_t)0);
 
+      // static String lastPayload = "";
+      // String currentPayload = String((const char *)qrCodeData.payload);
+
+      // if (qrCodeData.valid && currentPayload != lastPayload) {
+      //   lastPayload = currentPayload;
+      //   xQueueSend(self->qrCodeQueue, &qrCodeData, (TickType_t)0);
+      // }
+
       if (self->debug)
       {
         Serial.println();
@@ -373,32 +380,3 @@ void ESP32QRCodeReader::setDebug(bool on)
 {
   debug = on;
 }
-
-/*
-ALVARO CFG
-  cameraConfig.ledc_channel = LEDC_CHANNEL_0;
-  cameraConfig.ledc_timer = LEDC_TIMER_0;
-  cameraConfig.pin_d0 = pins.Y2_GPIO_NUM;
-  cameraConfig.pin_d1 = pins.Y3_GPIO_NUM;
-  cameraConfig.pin_d2 = pins.Y4_GPIO_NUM;
-  cameraConfig.pin_d3 = pins.Y5_GPIO_NUM;
-  cameraConfig.pin_d4 = pins.Y6_GPIO_NUM;
-  cameraConfig.pin_d5 = pins.Y7_GPIO_NUM;
-  cameraConfig.pin_d6 = pins.Y8_GPIO_NUM;
-  cameraConfig.pin_d7 = pins.Y9_GPIO_NUM;
-  cameraConfig.pin_xclk = pins.XCLK_GPIO_NUM;
-  cameraConfig.pin_pclk = pins.PCLK_GPIO_NUM;
-  cameraConfig.pin_vsync = pins.VSYNC_GPIO_NUM;
-  cameraConfig.pin_href = pins.HREF_GPIO_NUM;
-  cameraConfig.pin_sscb_sda = pins.SIOD_GPIO_NUM;
-  cameraConfig.pin_sscb_scl = pins.SIOC_GPIO_NUM;
-  cameraConfig.pin_pwdn = pins.PWDN_GPIO_NUM;
-  cameraConfig.pin_reset = pins.RESET_GPIO_NUM;
-  cameraConfig.xclk_freq_hz = 10000000;
-  cameraConfig.pixel_format = PIXFORMAT_GRAYSCALE;
-
-  cameraConfig.frame_size = FRAMESIZE_QVGA;
-  //cameraConfig.frame_size = frameSize;
-  cameraConfig.jpeg_quality = 15;
-  cameraConfig.fb_count = 1;
-*/

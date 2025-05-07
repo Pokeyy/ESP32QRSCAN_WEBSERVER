@@ -7,44 +7,51 @@
 
 //#define CAMERA_MODEL_AI_THINKER
 SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();  // Define the mutex here
-const char *ssid = "Frontier2672";
-const char *password = "2608177775";
+const char *ssid = "ASUS_2.4G";
+const char *password = "111627284450";
 static int frame_counter = 0; 
 
 //ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
 ESP32QRCodeReader reader(CAMERA_MODEL_XIAO_ESP32S3);
 
+void triggerServo()
+{
+
+}
 
 void onQrCodeTask(void *pvParameters)
 {
   struct QRCodeData qrCodeData;
+  static String lastPayload = "";
+  static int repeatCount = 0;
 
   while (true)
   {
-    //Serial.printf("Stack high water mark before: %d\n", uxTaskGetStackHighWaterMark(NULL));
-    if (frame_counter % 10 == 0 && reader.receiveQrCode(&qrCodeData, 100)) {
-        frame_counter++;
-    } else {
-        frame_counter++;
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-        continue;
-    }
-    
-    {
-      //Serial.printf("Stack high water mark after: %d\n", uxTaskGetStackHighWaterMark(NULL));
-      Serial.println("Found QRCode");
-      if (qrCodeData.valid)
-      {
-        Serial.print("Payload: ");
-        Serial.println((const char *)qrCodeData.payload);
+    if (reader.receiveQrCode(&qrCodeData, 100)) {
+      if (qrCodeData.valid) {
+        String current = String((const char *)qrCodeData.payload);
+
+        if (current == lastPayload) {
+          repeatCount++;
+        } else {
+          repeatCount = 1;
+          lastPayload = current;
+        }
+
+        Serial.printf("QR: %s (count: %d)\n", current.c_str(), repeatCount);
+
+        // Example: trigger after 5 consistent reads
+        if (repeatCount == 10) {
+          repeatCount = 0;
+          Serial.println("Dropping!");
+          Serial.flush();
+          delay(20);
+          // triggerServo(); // need servo logic
+        }
       }
-      else
-      {
-        Serial.print("Invalid: ");
-        Serial.println((const char *)qrCodeData.payload);
-      }
     }
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    vTaskDelay(50 / portTICK_PERIOD_MS); // Smooth scheduling
   }
 }
 
@@ -68,9 +75,9 @@ void readMacAddress(){
   //
   //SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();
     
-    //static int frame_counter = 0;
 void setup()
 {
+  esp_log_level_set("cam_hal", ESP_LOG_NONE);
   if (!psramFound()) {
     Serial.println("PSRAM not found! Reduce memory usage.");
   }
@@ -80,7 +87,7 @@ void setup()
   if (!psramFound()) {
     Serial.println("PSRAM not found! Reduce memory usage.");
   }
-  //Serial.printf("Free heap size: %u\n", esp_get_free_heap_size());
+
   WiFi.begin(ssid, password);
   WiFi.setSleep(false);
 
@@ -90,8 +97,6 @@ void setup()
   }
   Serial.println("");
   Serial.println("WiFi connected");
-
-  //Serial.printf("Free heap size before camera setup: %u\n", esp_get_free_heap_size());
 
   startCameraServer();
 

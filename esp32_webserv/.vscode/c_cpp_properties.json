@@ -8,11 +8,11 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
-                "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
+                "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
+                "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/include",
-                "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/src",
+                "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/include",
+                "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/src",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                 "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -249,11 +249,11 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
-                    "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
+                    "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/include",
+                    "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/src",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                    "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/include",
-                    "c:/sdp_drone_project_repo/xiao_esp32_webserver/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/src",
+                    "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/include",
+                    "c:/Users/Peter Tran/Documents/Projects/sdp/ESP32QRSCAN_WEBSERVER/esp32_webserv/.pio/libdeps/seeed_xiao_esp32s3/ESP32QRCodeReader/src",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                     "C:/Users/Peter Tran/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -489,7 +489,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60117",
+                "PLATFORMIO=60118",
                 "ARDUINO_XIAO_ESP32S3",
                 "BOARD_HAS_PSRAM",
                 "ARDUINO_USB_MODE=1",

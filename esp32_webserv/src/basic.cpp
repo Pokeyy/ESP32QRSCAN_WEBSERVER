@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 #include "camera_pins.h"
+#include <ESP32Servo.h>
 
 //#define CAMERA_MODEL_AI_THINKER
 SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();  // Define the mutex here
@@ -11,12 +12,24 @@ const char *ssid = "ASUS_2.4G";
 const char *password = "111627284450";
 static int frame_counter = 0; 
 
+
 //ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
 ESP32QRCodeReader reader(CAMERA_MODEL_XIAO_ESP32S3);
 
+Servo myServo;
+const int SERVO_PIN = 1;
+const int VALID_LED = 2;
+const int INVALID_LED = 3;
+const int SERVO_CLOSED = 7;
+const int SERVO_OPEN = 78;
+int servoPos = 0;
+
 void triggerServo()
 {
-
+  digitalWrite(VALID_LED, HIGH);
+  myServo.write(SERVO_OPEN);
+  delay(2000);  // Hold the LED on for 2 seconds after drop
+  digitalWrite(VALID_LED, LOW);
 }
 
 void onQrCodeTask(void *pvParameters)
@@ -32,7 +45,10 @@ void onQrCodeTask(void *pvParameters)
         String current = String((const char *)qrCodeData.payload);
 
         if (current == lastPayload) {
+          digitalWrite(VALID_LED, HIGH);
           repeatCount++;
+          delay(10);
+          digitalWrite(VALID_LED, LOW);
         } else {
           repeatCount = 1;
           lastPayload = current;
@@ -40,14 +56,35 @@ void onQrCodeTask(void *pvParameters)
 
         Serial.printf("QR: %s (count: %d)\n", current.c_str(), repeatCount);
 
-        // Example: trigger after 5 consistent reads
-        if (repeatCount == 10) {
+        if(repeatCount == 10) {
+          if(current == "https://www.cpp.edu/") {
+            triggerServo();
+          }
+          else {
+            digitalWrite(INVALID_LED, HIGH);
+            delay(500);
+            digitalWrite(INVALID_LED, LOW);
+            myServo.write(SERVO_CLOSED);
+          }
           repeatCount = 0;
-          Serial.println("Dropping!");
-          Serial.flush();
-          delay(20);
-          // triggerServo(); // need servo logic
         }
+        // if (repeatCount == 10 && current == "https://www.cpp.edu/") {
+        //   triggerServo();
+        //   repeatCount = 0;
+        //   // Serial.println("Valid QR Code - Dropping!");
+        //   // Serial.flush();
+        //   delay(100);
+        //   digitalWrite(2, LOW);
+        //   // triggerServo(); // need servo logic
+        // }
+        // else if(repeatCount == 10) {
+        //   digitalWrite(INVALID_LED, HIGH);
+        //   //Serial.println("Invalid QR Code.");
+        //   repeatCount = 0;
+        //   myServo.write(SERVO_CLOSED);
+        //   delay(1000);
+        //   digitalWrite(INVALID_LED, LOW);
+        // }
       }
     }
 
@@ -70,18 +107,19 @@ void readMacAddress(){
     Serial.println("Failed to read MAC address");
   }
 }
-
-
-  //
-  //SemaphoreHandle_t camera_mutex = xSemaphoreCreateMutex();
     
 void setup()
 {
-  esp_log_level_set("cam_hal", ESP_LOG_NONE);
+  esp_log_level_set("*", ESP_LOG_WARN);
   if (!psramFound()) {
     Serial.println("PSRAM not found! Reduce memory usage.");
   }
-  Serial.begin(115200);
+  Serial.begin(115200); // 115200 default
+  delay(1000);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  myServo.attach(SERVO_PIN);        // GPIO1
+  myServo.write(SERVO_CLOSED);
   Serial.println();
 
   if (!psramFound()) {
@@ -107,6 +145,15 @@ void setup()
   Serial.println("' to connect");
 
   reader.setup();
+  sensor_t *s = esp_camera_sensor_get();
+  if (s) {
+    s->set_brightness(s, 1);              // match UI or set your own default
+    s->set_contrast(s, 2);
+    s->set_saturation(s, 0);
+    s->set_gainceiling(s, (gainceiling_t)6);
+    s->set_vflip(s, 1);                   // for physical orientation
+    //s->set_framesize(s, FRAMESIZE_QVGA);  // Only works before init or if using JPEG
+  }
 
   Serial.println("Setup QRCode Reader");
 

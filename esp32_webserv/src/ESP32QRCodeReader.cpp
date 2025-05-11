@@ -118,7 +118,10 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
   if(s->id.PID == OV2640_PID) {
     //  cmd_handler(req);
       s->set_hmirror(s, 0);
-      s->set_vflip(s, 1);
+      s->set_vflip(s, 0);
+      s->set_brightness(s, 1);
+      s->set_contrast(s, 2);
+      s->set_gainceiling(s, (gainceiling_t)6);
   }
 
   if (s->id.PID == OV3660_PID) {
@@ -319,14 +322,6 @@ void qrCodeDetectTask(void *taskData)
         qrCodeData.payloadLen = data.payload_len;
       }
       xQueueSend(self->qrCodeQueue, &qrCodeData, (TickType_t)0);
-
-      // static String lastPayload = "";
-      // String currentPayload = String((const char *)qrCodeData.payload);
-
-      // if (qrCodeData.valid && currentPayload != lastPayload) {
-      //   lastPayload = currentPayload;
-      //   xQueueSend(self->qrCodeQueue, &qrCodeData, (TickType_t)0);
-      // }
 
       if (self->debug)
       {
